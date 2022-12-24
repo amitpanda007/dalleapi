@@ -82,23 +82,6 @@ async def upload_and_generate_image(request: Request, file: UploadFile, count: i
         print(e)
 
 
-@app.post("/generate-variation")
-async def generate_image_variation(request: Request, file: UploadFile):
-
-    try:
-        dalle_variation_image = await upload_and_generate_image(request, file)
-        return JSONResponse(
-            status_code=200,
-            content={"message": "Variation Image Generated", "images": dalle_variation_image},
-        )
-    except Exception as e:
-        print(e)
-        return JSONResponse(
-            status_code=500,
-            content={"message": f"Oops! Something went wrong..."},
-        )
-
-
 @app.post("/generate-variation/{count}")
 async def generate_image_variation(count: int, request: Request, file: UploadFile):
     try:

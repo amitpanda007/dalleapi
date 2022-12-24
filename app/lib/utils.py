@@ -1,6 +1,12 @@
-import openai
+import os
 
-openai.api_key = "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"
+import openai
+from dotenv import load_dotenv
+
+load_dotenv()
+OPENAI_APIKEY = os.getenv('OPENAI_APIKEY')
+
+openai.api_key = OPENAI_APIKEY
 
 
 def create_image(text: str):

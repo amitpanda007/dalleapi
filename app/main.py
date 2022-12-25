@@ -40,9 +40,9 @@ async def heartbeat():
 
 @app.get("/generate-image/")
 async def generate_image(text: str):
-    # dalle_image = create_image(text)
-    await asyncio.sleep(5)
-    dalle_image = "https://via.placeholder.com/1024"
+    dalle_image = create_image(text)
+    # await asyncio.sleep(5)
+    # dalle_image = "https://via.placeholder.com/1024"
     return dalle_image
 
 

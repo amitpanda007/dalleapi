@@ -35,6 +35,19 @@ def image_variation(image_path: str, count: int = 1):
         print(e)
 
 
+def image_masking(image_path: str, mask_image_path: str, prompt: str):
+    response = openai.Image.create_edit(
+        image=open(image_path, "rb"),
+        mask=open(mask_image_path, "rb"),
+        prompt=prompt,
+        n=1,
+        size="1024x1024"
+    )
+    image_url = response['data']
+    print(image_url)
+    return image_url
+
+
 def image_thumbnail(img):
     width, height = img.size
     img = ImageOps.exif_transpose(img)
@@ -46,3 +59,7 @@ def image_thumbnail(img):
     print(size)
     image = img.resize(size, Image.Resampling.LANCZOS)
     return image
+
+
+if __name__ == "__main__":
+    image_masking("../../upload/20221108_140116.png", "../../upload/mask.png", "a man standing with a painting behind him")

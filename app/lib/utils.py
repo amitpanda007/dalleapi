@@ -1,9 +1,10 @@
 import os
 
 import openai
+from PIL import Image, ExifTags, ImageOps
 from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 OPENAI_APIKEY = os.getenv('OPENAI_APIKEY')
 print(OPENAI_APIKEY)
 
@@ -32,3 +33,16 @@ def image_variation(image_path: str, count: int = 1):
         return image_urls
     except Exception as e:
         print(e)
+
+
+def image_thumbnail(img):
+    width, height = img.size
+    img = ImageOps.exif_transpose(img)
+
+    if width > 1024 and height > 1024:
+        size = 512, 512
+    else:
+        size = min(width, height), min(width, height)
+    print(size)
+    image = img.resize(size, Image.Resampling.LANCZOS)
+    return image

@@ -10,7 +10,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from PIL import Image
 
-from app.lib.utils import create_image, image_variation
+from app.lib.utils import create_image, image_variation, image_thumbnail
+
 CHUNK_SIZE = 4096 * 4096
 
 app = FastAPI()
@@ -66,13 +67,16 @@ async def upload_and_generate_image(request: Request, file: UploadFile, count: i
 
         if file_ext not in file_mask:
             im = Image.open(f'upload/{file.filename}')
-            width, height = im.size
-            if width > 1024 and height > 1024:
-                size = 1024
-            else:
-                size = min(width, height)
-            im = im.resize((size, size))
-            im.save(f'upload/{filename_without_ext}.png')
+            img = image_thumbnail(im)
+            img.save(f'upload/{filename_without_ext}.png', "PNG")
+
+            # width, height = im.size
+            # if width > 1024 and height > 1024:
+            #     size = 1024
+            # else:
+            #     size = min(width, height)
+            # im = im.resize((size, size))
+            # im.save(f'upload/{filename_without_ext}.png')
 
         print("File upload done. starting Image Processing with DALLE.")
         dalle_variation_image = image_variation(f'upload/{filename_without_ext}.png', count)
